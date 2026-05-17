@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Path
+from fastapi import FastAPI, Path, HTTPException, Query
 import json
 
 app = FastAPI()
@@ -24,11 +24,29 @@ def view():
     return data
 
 @app.get("/cilent/{account_id}")
-def view_account(account_id : str = Path(..., description = "id of the cilent account", example = "ACC001")):
+def view_account(account_id : str = Path(..., description = "id of the cilent account", examples = "ACC001")):
     data = load_data()
 
     if account_id in data:
         return data[account_id]
-    return {"error" : "account_not_found"}
+    raise HTTPException(status_code = 404, description = "data not found")
 
 
+@app.get("/sort")
+def sort_accounts(sort_by : str = Query(..., description = "sort on bias of age, account_type or account_status"), order: str = Query("asc", description = "sort in asc or desc order")):
+
+    valid_fields = ["age", "account_type", "account_status"]
+
+    if sort_by not in valid_fields:
+        raise HTTPException(status_code = 400, description = "invalid fields select from {valid_fields}")
+    
+    if order not in ["asc", "desc"]:
+        raise HTTPException(status_code = 400, description = "select asc or desc")
+
+    data = load_data()
+
+    sort_order = True if order == "desc" else False
+
+    sorted_data = sorted(data.values(), key=lambda x: x.get(sort_by, 0), reverse=False)
+
+    return sorted_data
