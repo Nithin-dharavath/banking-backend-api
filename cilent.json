@@ -1,0 +1,64 @@
+{
+  "ACC001": {
+    "account_holder": "Rahul Sharma",
+    "city": "Hyderabad",
+    "age": 32,
+    "gender": "male",
+    "account_type": "savings",
+    "balance": 45000.75,
+    "currency": "INR",
+    "account_status": "active",
+    "transactions": [
+      {
+        "txn_id": "TXN1001",
+        "type": "deposit",
+        "amount": 10000,
+        "status": "success"
+      },
+      {
+        "txn_id": "TXN1002",
+        "type": "withdraw",
+        "amount": 2500,
+        "status": "success"
+      }
+    ]
+  },
+
+  "ACC002": {
+    "account_holder": "Priya Nair",
+    "city": "Bangalore",
+    "age": 27,
+    "gender": "female",
+    "account_type": "current",
+    "balance": 120500.00,
+    "currency": "INR",
+    "account_status": "active",
+    "transactions": [
+      {
+        "txn_id": "TXN1003",
+        "type": "transfer",
+        "amount": 15000,
+        "status": "success"
+      }
+    ]
+  },
+
+  "ACC003": {
+    "account_holder": "Amit Patel",
+    "city": "Ahmedabad",
+    "age": 45,
+    "gender": "male",
+    "account_type": "savings",
+    "balance": 8500.50,
+    "currency": "INR",
+    "account_status": "inactive",
+    "transactions": [
+      {
+        "txn_id": "TXN1004",
+        "type": "withdraw",
+        "amount": 5000,
+        "status": "failed"
+      }
+    ]
+  }
+}
