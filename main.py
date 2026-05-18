@@ -63,12 +63,12 @@ class update_user(BaseModel):
 #help functions
 
 def load_data():
-    with open ('cilent.json', 'r') as f:
+    with open ('data.json', 'r') as f:
         data = json.load(f)
     return data
 
 def save_data(data):
-    with open("cilent.json", "w") as f:
+    with open("data.json", "w") as f:
         json.dump(data, f)
 
 #rotues
@@ -81,12 +81,12 @@ def home():
 def about():
     return {"message" : "project is about to develop a backend fastapi of banking transcation"}
 
-@app.get("/view")
+@app.get("/customers")
 def view():
     data = load_data()
     return data
 
-@app.get("/cilent/{account_id}")
+@app.get("/customer/{account_id}")
 def view_account(account_id : str = Path(..., description = "id of the cilent account", examples = "ACC001")):
     data = load_data()
 
@@ -152,4 +152,3 @@ def delete_user (account_id : str):
     del data[account_id]
     save_data(data)
     return JSONResponse(status_code=200, content={"mesage" : "user deleted"})
-    
