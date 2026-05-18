@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Path, HTTPException, Query
 from fastapi.responses import JSONResponse
-from typing import Dict, List, Annotated, Literal
+from typing import Dict, List, Annotated, Literal, Optional
 from pydantic import BaseModel, Field
 import json
 
@@ -32,7 +32,7 @@ class Transaction(BaseModel):
 class Acc_Holder(BaseModel):
 
     id: Annotated[str, Field(..., example="ACC001")]
-    name: Annotated[str, Field(..., example="Rahul Sharma")]
+    account_holder: Annotated[str, Field(..., example="Rahul Sharma")]
     city: Annotated[str, Field(..., example="Hyderabad")]
     age: Annotated[int, Field(..., gt=0, lt=120, example=32)]
     gender: Annotated[Literal["male", "female", "others"], Field(..., example="male")]
@@ -45,6 +45,20 @@ class Acc_Holder(BaseModel):
         List[Transaction],
         Field(..., description="transaction details")
     ]
+
+
+
+#data validation for update feature
+
+class update_user(BaseModel):
+
+    account_holder : Annotated[Optional[str], Field(default = None)]
+    city : Annotated[Optional[str], Field(default = None)]
+    age : Annotated[Optional[int], Field(default = None)]
+    gender : Annotated[Optional[str], Field(default = None)]
+    account_type : Annotated[Optional[str], Field(default = None)]
+    account_status : Annotated[Optional[str], Field(default = None)]
+
 
 #help functions
 
@@ -114,3 +128,17 @@ def create_new_customer(account_holder : Acc_Holder):
     save_data(data)
 
     return JSONResponse(status_code = 201, content = {"message" : "new customer cteated"})
+
+
+@app.put("/edit/{account_id}")
+def Update_User (account_id : str, account_update : update_user):
+    data = load_data()
+    if account_id not in data:
+        raise HTTPException(status_code=404, detail = "Account ID not found")
+
+    updated_data = account_update.model_dump(exclude_unset = True)
+
+    data[account_id].update(updated_data)
+
+    save_data(data)
+    return JSONResponse(status_code=200, content = {"message" : "user info updated successfully"})
