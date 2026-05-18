@@ -142,3 +142,14 @@ def Update_User (account_id : str, account_update : update_user):
 
     save_data(data)
     return JSONResponse(status_code=200, content = {"message" : "user info updated successfully"})
+
+
+@app.delete("/delete/{account_id}")
+def delete_user (account_id : str):
+    data = load_data()
+    if account_id not in data:
+        raise HTTPException(status_code=404, detail="user not found")
+    del data[account_id]
+    save_data(data)
+    return JSONResponse(status_code=200, content={"mesage" : "user deleted"})
+    
